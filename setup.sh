@@ -4,7 +4,7 @@
 sudo apt-get install python-pip python-virtualenv
 
 # Initialize new env here
-virtualenv .
+virtualenv --no-site-packages .
 
 # Activate the environment
 source bin/activate

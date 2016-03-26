@@ -1,6 +1,5 @@
 #!/bin/python
 
-# Imports
 from selenium import webdriver
 import time
 import urllib
@@ -16,7 +15,12 @@ LOAD_TIME           = 3
 #### Google API Constansts####
 API_KEY             = "AIzaSyCgpO23gLyiMQvKkMpWvT7Y5VtvwfBTjWE"
 
+
 def get_youtube_api_url(youtube_url):
+    """
+    Get the URL for accessing the YouTube APIs.
+    takes full youtube url as parameter
+    """
 
     # Remove the additional info in the link such as playlist, channel etc...
     raw_url = youtube_url.split("&")
@@ -26,7 +30,12 @@ def get_youtube_api_url(youtube_url):
     api_url = "https://www.googleapis.com/youtube/v3/videos?id=%s&key=%s&part=snippet" % (video_id, API_KEY)
     return api_url
 
+
 def get_video_title(api_url):
+    """
+    Retrieve the video title from the Google API JSON response
+    expects valid Google API url
+    """
 
     # Get the response from the Google APIs
     response = urllib.urlopen(api_url)
@@ -40,7 +49,11 @@ def get_video_title(api_url):
     
 
 def get_download_link (youtube_url):
-
+    """
+    Submit the youtube url to external website which converts video to mp3.
+    Retrieve and return download link
+    Expects valid youtube video url
+    """
     # Get the Firefox webdriver
     driver = webdriver.Firefox()
 
@@ -73,7 +86,10 @@ def get_download_link (youtube_url):
 
 
 def download_video_as_mp3(youtube_url):
-    
+    """
+    Downloads the YoutTube video audio as an MP3.
+    File saved in current folder
+    """
     # Get the video title from the YouTube APIs
     api_url = get_youtube_api_url(youtube_url)
     video_title = "%s.mp3" % get_video_title(api_url)
@@ -88,9 +104,9 @@ def main ():
 
     download_video_as_mp3("https://www.youtube.com/watch?v=6Zbw86Xts5Q")
 
-    #TODO: Command line parsing 
+    #TODO: Command line parsing, more exception handling. Make it more modular
     
 
 if __name__ == '__main__':
     main()
-n
+
