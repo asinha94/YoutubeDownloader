@@ -4,6 +4,7 @@
 from selenium import webdriver
 import time
 import urllib
+import json
 
 #### YouTube to MP3 HTML CONSTANTS ####
 YOUTUBE_TO_MP3_SITE = "http://www.youtube-mp3.org"
@@ -12,6 +13,31 @@ CONVERT_BTN         = "submit"
 DOWNLOAD_LINK       = "Download"
 LOAD_TIME           = 3
 
+#### Google API Constansts####
+API_KEY             = "AIzaSyCgpO23gLyiMQvKkMpWvT7Y5VtvwfBTjWE"
+
+def get_youtube_api_url(youtube_url):
+
+    # Remove the additional info in the link such as playlist, channel etc...
+    raw_url = youtube_url.split("&")
+    # Remove everything before the video id
+    video_id = raw_url[0].split("=")[-1]
+
+    api_url = "https://www.googleapis.com/youtube/v3/videos?id=%s&key=%s&part=snippet" % (video_id, API_KEY)
+    return api_url
+
+def get_video_title(api_url):
+
+    # Get the response from the Google APIs
+    response = urllib.urlopen(api_url)
+    parsed_response = json.load(response)
+
+    items = parsed_response["items"]
+    snippet = items[0]["snippet"]
+    title = snippet["title"]
+
+    return title
+    
 
 def get_download_link (youtube_url):
 
@@ -46,17 +72,25 @@ def get_download_link (youtube_url):
     return download_link
 
 
+def download_video_as_mp3(youtube_url):
+    
+    # Get the video title from the YouTube APIs
+    api_url = get_youtube_api_url(youtube_url)
+    video_title = "%s.mp3" % get_video_title(api_url)
+
+    # Get the download link for the mp3 song
+    download_link = get_download_link(youtube_url)
+
+    # Download the song
+    urllib.urlretrieve(download_link, video_title)
+
 def main ():
 
-    # Get download link
-    mp3_download_link = get_download_link("https://www.youtube.com/watch?v=6Zbw86Xts5Q") # Defaulted to Me, Myself and I - G-Easy
+    download_video_as_mp3("https://www.youtube.com/watch?v=6Zbw86Xts5Q")
 
-    # Download file
-    urllib.urlretrieve(mp3_download_link, "song.mp3")
-
-    #TODO: Parse youtube page for artist, song title etc...
-    #      Command line parsing 
+    #TODO: Command line parsing 
     
 
 if __name__ == '__main__':
     main()
+n
