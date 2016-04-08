@@ -85,13 +85,6 @@ def get_download_link (youtube_url):
 
     return download_link
 
-
-def download_video_as_mp3(youtube_url):
-    """
-    Downloads the YoutTube video audio as an MP3.
-    File saved in current folder
-    """
-
 def main ():
     
     if len(sys.argv) == 1:
