@@ -1,9 +1,10 @@
-#!/bin/python
-
+#!/usr/bin/python
+# Because this is usually run through PIP, this will generally not work
 from selenium import webdriver
 import time
 import urllib
 import json
+import sys
 
 #### YouTube to MP3 HTML CONSTANTS ####
 YOUTUBE_TO_MP3_SITE = "http://www.youtube-mp3.org"
@@ -90,21 +91,34 @@ def download_video_as_mp3(youtube_url):
     Downloads the YoutTube video audio as an MP3.
     File saved in current folder
     """
-    # Get the video title from the YouTube APIs
-    api_url = get_youtube_api_url(youtube_url)
-    video_title = "%s.mp3" % get_video_title(api_url)
-
-    # Get the download link for the mp3 song
-    download_link = get_download_link(youtube_url)
-
-    # Download the song
-    urllib.urlretrieve(download_link, video_title)
 
 def main ():
+    
+    if len(sys.argv) == 1:
+        sys.exit("Invalid arguments. Pass Youtube URL(s) as arguments")
 
-    download_video_as_mp3("https://www.youtube.com/watch?v=6Zbw86Xts5Q")
+    SAMPLE_URL = "https://www.youtube.com/watch?v=6Zbw86Xts5Q"
 
-    #TODO: Command line parsing, more exception handling. Make it more modular
+    for url in sys.argv[1:]: # Skipping Index 0, the name of the Program, YoutubeDownloader.py.
+
+        # Skip if not a YouTube URL
+        if "youtube" not in url.lower():
+            print("Argument: %s, not a Youtube URL" % url)
+            continue
+        
+        # Get the video title from the YouTube APIs
+        api_url = get_youtube_api_url(url)
+
+        # Replace spaces with underscores from name and add .mp3
+        video_title = "%s.mp3" % ( get_video_title(api_url).replace(" ", "_") ) 
+        
+        # Get the download link for the mp3 song
+        download_link = get_download_link(url)
+
+        # Download the song
+        urllib.urlretrieve(download_link, video_title)
+
+    #TODO: more exception handling. Make it more modular
     
 
 if __name__ == '__main__':
