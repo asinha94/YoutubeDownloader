@@ -1,4 +1,4 @@
-#!/usr/bin/python
+#!/usr/bin/env python
 # Because this is usually run through PIP, this will generally not work
 from selenium import webdriver
 import time
@@ -88,9 +88,7 @@ def get_download_link (youtube_url):
 def main ():
     
     if len(sys.argv) == 1:
-        sys.exit("Invalid arguments. Pass Youtube URL(s) as arguments")
-
-    SAMPLE_URL = "https://www.youtube.com/watch?v=6Zbw86Xts5Q"
+        sys.exit("Argument(s) required. Pass Youtube URL(s) as arguments")
 
     for url in sys.argv[1:]: # Skipping Index 0, the name of the Program, YoutubeDownloader.py.
 
