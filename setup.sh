@@ -1,5 +1,6 @@
 #!/bin/bash 
 
+# test to use compare view feature in github
 # Install Pip and virtualenv
 sudo apt-get install python-pip python-virtualenv
 
