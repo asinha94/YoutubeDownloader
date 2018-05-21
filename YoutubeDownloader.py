@@ -14,7 +14,7 @@ DOWNLOAD_LINK       = "Download"
 LOAD_TIME           = 3
 
 #### Google API Constansts####
-API_KEY             = "AIzaSyCgpO23gLyiMQvKkMpWvT7Y5VtvwfBTjWE"
+API_KEY             = ""
 
 
 def get_youtube_api_url(youtube_url):
